@@ -29,11 +29,7 @@ async function run() {
     // await client.connect();
 
     const TouristCollection =client.db ('Tourist').collection ('touristSpot');
-     app.get ('/addTouristSpot', async (req,res) => {
-      const cursor = TouristCollection.find ()
-      const result = await cursor.toArray ();
-      res.send (result)
-     })
+   
 
     app.post ('/addTouristSpot', async (req,res)=>{
       const tourist = req.body
@@ -41,6 +37,18 @@ async function run() {
       const result = await TouristCollection.insertOne (tourist)
       res.send (result);
     })
+     
+    app.get ('/addTouristSpot', async (req,res) => {
+      const cursor = TouristCollection.find ()
+      const result = await cursor.toArray ();
+      res.send (result)
+     })
+     
+     app.get ("/myList/:email", async (req,res) => {
+       console.log (req.params.email)
+       const result = await TouristCollection.find ({email:req.params.email}).toArray ();
+       res.send (result)
+     })
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
